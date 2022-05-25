@@ -1,0 +1,44 @@
+---
+_schema-version: '3.1'
+ID: cap-sudoku
+version: 1.0.0
+description: "A simple CAP project."
+parameters:
+  enable-parallel-deployments: false
+build-parameters:
+  before-all:
+    - builder: custom
+      commands:
+        - npm ci
+        - npx -p @sap/cds-dk cds build --production
+
+modules:
+  - name: cap-sudoku-srv
+    type: nodejs
+    path: gen/srv
+    requires:
+      - name: sudoku-cap-uaa
+      - name: sudoku-cap-destination-service
+    parameters:
+      buildpack: nodejs_buildpack
+    build-parameters:
+      builder: npm-ci
+    provides:
+      - name: srv-api # required by consumers of CAP services (e.g. approuter)
+        properties:
+          srv-url: ${default-url}
+
+resources:
+  - name: sudoku-cap-uaa
+    parameters:
+      path: ./xs-security.json  
+      service: xsuaa    
+      service-plan: application
+      service-keys: 
+        - name: sudoku-cap-key      
+    type: org.cloudfoundry.managed-service   
+  - name: sudoku-cap-destination-service
+    parameters:
+      service-plan: lite
+      service: destination
+    type: org.cloudfoundry.managed-service
