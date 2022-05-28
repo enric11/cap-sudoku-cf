@@ -43,10 +43,10 @@
   },
   "cds": {
     "requires": {
-      "SODUKU-PYTHON2": {
+      "SODUKU-PYTHON": {
         "kind": "rest",
         "credentials": {
-          "destination": "SODUKU-PYTHON2"
+          "destination": "SODUKU-PYTHON"
         }
       }
     }

@@ -3,8 +3,8 @@ const cds = require("@sap/cds")
 module.exports = cds.service.impl (function(){
   this.on ('getTodos', async (req) => {
 
-    const todoApi = await cds.connect.to("SODUKU-PYTHON2")
-    return todoApi.tx(req).get("/")
+    const todoApi = await cds.connect.to("SODUKU-PYTHON")
+    return todoApi.tx(req).get("/custom?size=2&dificulty=0.1")
 
   }) 
 })
